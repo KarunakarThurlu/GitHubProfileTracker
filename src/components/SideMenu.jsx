@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -8,18 +8,26 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SwitchAccountRoundedIcon from '@mui/icons-material/SwitchAccountRounded';
 import CollectionsBookmarkRoundedIcon from '@mui/icons-material/CollectionsBookmarkRounded';
-import Dashboard from '../pages/Dashboard';
 import { Link } from 'react-router-dom';
+import UserContext from '../context/UserContext';
+import { Avatar } from '@mui/material';
 
 
 const SideMenu = ({onClose}) =>{
+
+  const { globalState } = useContext(UserContext);
 
  return(
     <div onClick={onClose} >
       <List>
         <ListItem component={Link} to='/profile'>
           <ListItemIcon>
-            <AccountCircleIcon />
+          <Avatar
+              alt="Profile Image"
+              src={globalState.userObject?.avatar_url}
+              sx={{ width: 30, height: 30, cursor: 'pointer' }}
+              
+            />
           </ListItemIcon>
           <ListItemText primary="Profile" />
         </ListItem>

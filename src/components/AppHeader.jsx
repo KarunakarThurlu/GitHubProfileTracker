@@ -35,7 +35,7 @@ const AppHeader = () => {
   }
 
   const clearSearch = () => {
-    setState(prevState => ({ ...prevState, searchApplied: false, gitHubUserName: '' }))
+    setState(prevState => ({ ...prevState, searchApplied: false, gitHubUserName: '',chipValue:'' }))
     clearUserData()
   }
 
@@ -76,13 +76,14 @@ const AppHeader = () => {
               size='small'
               id="outlined-uncontrolled"
               value={state.gitHubUserName}
-              placeholder='Enter User Name'
+              placeholder={state.chipValue==='' &&
+                 'Enter User Name'}
               onChange={handleChange}
               sx={{ marginRight: 5, bgcolor: 'white', borderRadius: 1, width: 300, border: '20px' }}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">
-                    {state.searchApplied===true && <SearchField username={state.chipValue} clearSearch={clearSearch}/>}
+                  <InputAdornment position="end">
+                    {state.searchApplied===true && <SearchField username={state.chipValue} clearSearch={clearSearch} avatarUrl={globalState.userObject?.avatar_url}/>}
                   </InputAdornment>
                 ),
                 endAdornment: (
