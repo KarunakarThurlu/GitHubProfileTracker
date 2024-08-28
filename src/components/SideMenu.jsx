@@ -12,10 +12,10 @@ import Dashboard from '../pages/Dashboard';
 import { Link } from 'react-router-dom';
 
 
-const SideMenu = ({open}) =>{
+const SideMenu = ({onClose}) =>{
 
  return(
-    <div onClick={open} >
+    <div onClick={onClose} >
       <List>
         <ListItem component={Link} to='/profile'>
           <ListItemIcon>

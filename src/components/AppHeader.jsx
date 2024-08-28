@@ -8,17 +8,18 @@ import SearchIcon from '@mui/icons-material/Search';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import InputAdornment from '@mui/material/InputAdornment';
 import Drawer from '@mui/material/Drawer';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SideMenu from './SideMenu';
 import { Box, TextField, Avatar } from '@mui/material';
 import UserContext from '../context/UserContext';
 import UserProfile from './UserProfile';
+import SearchField from './SearchField';
 
 const AppHeader = () => {
 
   const [state, setState] = useState({
     drawerOpen: false,
     gitHubUserName: '',
+    chipValue:'',
     showUserProfile: false,
     searchApplied: false
   });
@@ -41,7 +42,7 @@ const AppHeader = () => {
   const handleSearch = () => {
     if(state.gitHubUserName!==''){
       getUserProfile(state.gitHubUserName)
-      setState(prevState => ({ ...prevState, searchApplied: true }))
+      setState(prevState => ({ ...prevState, searchApplied: true,chipValue:state.gitHubUserName, gitHubUserName:'' }))
     }
 
   }
@@ -74,12 +75,16 @@ const AppHeader = () => {
             <TextField
               size='small'
               id="outlined-uncontrolled"
-              placeholder='Enter User Name'
               value={state.gitHubUserName}
-              error={state.gitHubUserName===''}
+              placeholder='Enter User Name'
               onChange={handleChange}
               sx={{ marginRight: 5, bgcolor: 'white', borderRadius: 1, width: 300, border: '20px' }}
               InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    {state.searchApplied===true && <SearchField username={state.chipValue} clearSearch={clearSearch}/>}
+                  </InputAdornment>
+                ),
                 endAdornment: (
                   <InputAdornment position="end">
                     {
@@ -106,7 +111,7 @@ const AppHeader = () => {
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={state.drawerOpen} onClose={toggleDrawer(false)}>
-        <SideMenu />
+        <SideMenu onClose={toggleDrawer(false)}/>
       </Drawer>
     </>
   );

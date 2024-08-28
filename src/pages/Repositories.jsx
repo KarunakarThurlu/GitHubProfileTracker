@@ -1,11 +1,15 @@
-import React from "react"
+import React, { useContext } from 'react';
+import UserContext from '../context/UserContext';
+import ReposTable from '../components/ReposTable';
 
-const Repositories = () =>{
-    return(
-        <div>
-            <h2>Repos</h2>
-        </div>
-    )
-}
+const Repositories = () => {
+
+    const { globalState } = useContext(UserContext);
+    
+
+    return (
+        <ReposTable repos={globalState.userRepos}/>
+    );
+};
 
 export default Repositories;

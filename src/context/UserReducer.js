@@ -14,23 +14,37 @@ const UserReducer = (state, action) => {
                 userRepos: action.payload
             }
         }
-        case UserActions.COLUMNCHART_DATA :{
+        case UserActions.COLUMNCHART_DATA: {
             return {
                 ...state,
                 columnChartData: action.payload
             }
         }
-        case UserActions.CLEAR_USER_PROFILE :{
-            return  {
+        case UserActions.FOLLOWERS_DATA: {
+            return {
+                ...state,
+                followers: action.payload,
+            }
+        }
+        case UserActions.FOLLOWING_DATA: {
+            return {
+                ...state,
+                following: action.payload,
+            }
+        }
+        case UserActions.CLEAR_USER_PROFILE: {
+            return {
                 userObject: {},
                 userRepos: [],
                 columnChartData: {},
-              }
+                following:[],
+                followers:[]
+            }
         }
-        default:{
+        default: {
             return state
         }
-            
+
     }
 }
 export default UserReducer;

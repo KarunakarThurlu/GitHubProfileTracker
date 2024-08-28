@@ -10,6 +10,10 @@ export const fetchUserFollowers = async (username) => {
   return await axios.get(`${API_BASE_URL}/${username}/followers`);
 };
 
+export const fetchUserFollowing = async (username) => {
+  return await axios.get(`${API_BASE_URL}/${username}/following`);
+};
+
 export const fetchUserRepos = async (username,query) => {
   return await axios.get(`${API_BASE_URL}/${username}/repos?${query}`);
 };

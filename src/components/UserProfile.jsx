@@ -9,12 +9,21 @@ const UserProfile = ({ open, onClose }) => {
 
   return (
     <>
-      <Dialog open={open} onClose={onClose}>
+      <Dialog open={open} onClose={onClose}
+       maxWidth="xs" 
+       fullWidth
+       PaperProps={{
+        style: {
+            maxWidth: '400px',
+            padding: '16px',
+        },
+    }}
+      >
         <DialogContent>
           <Avatar
             alt="Profile Image"
             src={globalState.userObject?.avatar_url}
-            sx={{ width: '100%', height: '100%' }} 
+            sx={{ width: '100%', height: 'auto', aspectRatio: '1',  }} 
           />
         </DialogContent>
         <Button onClick={onClose} color="primary">
