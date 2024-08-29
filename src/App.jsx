@@ -17,6 +17,7 @@ function App() {
         <AppHeader />
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/GitHubProfileTracker/" element={<Dashboard />} />
           <Route path="/repositories" element={<Repositories />} />
           <Route path="/following" element={<Following />} />
           <Route path="/followers" element={<Followers />} />

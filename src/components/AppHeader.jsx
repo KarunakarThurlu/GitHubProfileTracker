@@ -13,18 +13,22 @@ import { Box, TextField, Avatar } from '@mui/material';
 import UserContext from '../context/UserContext';
 import UserProfile from './UserProfile';
 import SearchField from './SearchField';
+import Notifier from '../utils/Notifier';
 
 const AppHeader = () => {
 
   const [state, setState] = useState({
     drawerOpen: false,
     gitHubUserName: '',
-    chipValue:'',
+    chipValue: '',
     showUserProfile: false,
-    searchApplied: false
+    searchApplied: false,
+    showWarning: false,
+    warningMessage: '',
+    messageSeverity: ''
   });
 
-  const { getUserProfile, globalState,clearUserData } = useContext(UserContext);
+  const { getUserProfile, globalState, clearUserData } = useContext(UserContext);
 
   const toggleDrawer = (open) => (event) => {
     setState(prevState => ({ ...prevState, drawerOpen: open }))
@@ -35,14 +39,24 @@ const AppHeader = () => {
   }
 
   const clearSearch = () => {
-    setState(prevState => ({ ...prevState, searchApplied: false, gitHubUserName: '',chipValue:'' }))
+    setState(prevState => ({ ...prevState, searchApplied: false, gitHubUserName: '', chipValue: '' }))
     clearUserData()
   }
 
   const handleSearch = () => {
-    if(state.gitHubUserName!==''){
+    if (state.gitHubUserName !== '') {
       getUserProfile(state.gitHubUserName)
-      setState(prevState => ({ ...prevState, searchApplied: true,chipValue:state.gitHubUserName, gitHubUserName:'' }))
+      setState(prevState => ({
+        ...prevState,
+        searchApplied: true,
+        chipValue: state.gitHubUserName,
+        gitHubUserName: '',
+        showWarning:false,
+        warningMessage:'',
+        messageSeverity:''
+      }))
+    } else {
+      setState(prevState => ({ ...prevState, showWarning: true, warningMessage: "Please enter github user name!", messageSeverity: 'warning' }))
     }
 
   }
@@ -53,9 +67,14 @@ const AppHeader = () => {
     setState(prevState => ({ ...prevState, showUserProfile: true }))
   }
 
+  const handleNotifierClose = () => {
+    setState(prevState => ({ ...prevState, showWarning: false }))
+  }
+
   return (
     <>
-      {state.showUserProfile && <UserProfile open={state.showUserProfile} onClose={closeUserProfile} />}
+      <Notifier open={state.showWarning} onClose={handleNotifierClose} message={state.warningMessage} severity={state.messageSeverity} />
+      <UserProfile open={state.showUserProfile} onClose={closeUserProfile} />
       <AppBar position="static" color='primary'>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -76,14 +95,14 @@ const AppHeader = () => {
               size='small'
               id="outlined-uncontrolled"
               value={state.gitHubUserName}
-              placeholder={state.chipValue==='' &&
-                 'Enter User Name'}
+              placeholder={state.chipValue === '' &&
+                'Enter User Name'}
               onChange={handleChange}
               sx={{ marginRight: 5, bgcolor: 'white', borderRadius: 1, width: 300, border: '20px' }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="end">
-                    {state.searchApplied===true && <SearchField username={state.chipValue} clearSearch={clearSearch} avatarUrl={globalState.userObject?.avatar_url}/>}
+                    {state.searchApplied === true && <SearchField username={state.chipValue} clearSearch={clearSearch} avatarUrl={globalState.userObject?.avatar_url} />}
                   </InputAdornment>
                 ),
                 endAdornment: (
@@ -112,7 +131,7 @@ const AppHeader = () => {
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={state.drawerOpen} onClose={toggleDrawer(false)}>
-        <SideMenu onClose={toggleDrawer(false)}/>
+        <SideMenu onClose={toggleDrawer(false)} />
       </Drawer>
     </>
   );
