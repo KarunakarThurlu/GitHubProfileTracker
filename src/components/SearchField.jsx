@@ -9,13 +9,13 @@ export default function SearchField({ username, clearSearch,avatarUrl }) {
       };
     return (
         <Stack spacing={1} sx={{ alignItems: 'center' }}>
-            <Stack direction="row" spacing={1}>
+            <Stack direction="row" sx={{padding:'3px 4px',backgroundColor:'white',borderRadius:'3px'}} >
                 <Chip
                     label={username}
                     avatar={<Avatar alt="Natacha" src={avatarUrl} />}
                     color="success"
                     variant="outlined"
-                    onDelete={handleDelete} 
+                    onDelete={handleDelete}    
                 />
             </Stack>
         </Stack>

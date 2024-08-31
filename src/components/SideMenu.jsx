@@ -20,7 +20,7 @@ const SideMenu = ({onClose}) =>{
  return(
     <div onClick={onClose} >
       <List>
-        <ListItem component={Link} to='/profile'>
+        <ListItem component={Link} to='/GitHubProfileTracker/profile'>
           <ListItemIcon>
           <Avatar
               alt="Profile Image"
@@ -31,25 +31,25 @@ const SideMenu = ({onClose}) =>{
           </ListItemIcon>
           <ListItemText primary="Profile" />
         </ListItem>
-        <ListItem component={Link} to='/'>
+        <ListItem component={Link} to='/GitHubProfileTracker'>
           <ListItemIcon>
             <DashboardRoundedIcon />
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItem>
-        <ListItem component={Link} to='/repositories'>
+        <ListItem component={Link} to='/GitHubProfileTracker/repositories'>
           <ListItemIcon>
             <CollectionsBookmarkRoundedIcon />
           </ListItemIcon>
           <ListItemText primary="Repos" />
         </ListItem>
-        <ListItem component={Link} to='/followers'>
+        <ListItem component={Link} to='/GitHubProfileTracker/followers'>
           <ListItemIcon>
             <SupervisorAccountRoundedIcon />
           </ListItemIcon>
           <ListItemText primary="Followers" />
         </ListItem>
-        <ListItem component={Link} to='/following'>
+        <ListItem component={Link} to='/GitHubProfileTracker/following'>
           <ListItemIcon>
             <SwitchAccountRoundedIcon />
           </ListItemIcon>

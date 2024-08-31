@@ -18,10 +18,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/GitHubProfileTracker/" element={<Dashboard />} />
-          <Route path="/repositories" element={<Repositories />} />
-          <Route path="/following" element={<Following />} />
-          <Route path="/followers" element={<Followers />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/GitHubProfileTracker/repositories" element={<Repositories />} />
+          <Route path="/GitHubProfileTracker/following" element={<Following />} />
+          <Route path="/GitHubProfileTracker/followers" element={<Followers />} />
+          <Route path="/GitHubProfileTracker/profile" element={<Profile />} />
         </Routes>
       </UserState>
     </Router>

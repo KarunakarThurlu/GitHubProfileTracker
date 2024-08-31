@@ -9,11 +9,11 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import InputAdornment from '@mui/material/InputAdornment';
 import Drawer from '@mui/material/Drawer';
 import SideMenu from './SideMenu';
-import { Box, TextField, Avatar } from '@mui/material';
+import { Box, TextField, Avatar, Grid } from '@mui/material';
 import UserContext from '../context/UserContext';
 import UserProfile from './UserProfile';
-import SearchField from './SearchField';
 import Notifier from '../utils/Notifier';
+import SearchField from './SearchField';
 
 const AppHeader = () => {
 
@@ -76,58 +76,67 @@ const AppHeader = () => {
       <Notifier open={state.showWarning} onClose={handleNotifierClose} message={state.warningMessage} severity={state.messageSeverity} />
       <UserProfile open={state.showUserProfile} onClose={closeUserProfile} />
       <AppBar position="static" color='primary'>
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer(true)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" >
-              GitHub Profile Tracker
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <TextField
-              size='small'
-              id="outlined-uncontrolled"
-              value={state.gitHubUserName}
-              placeholder={state.chipValue === '' &&
-                'Enter User Name'}
-              onChange={handleChange}
-              sx={{ marginRight: 5, bgcolor: 'white', borderRadius: 1, width: 300, border: '20px' }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end">
-                    {state.searchApplied === true && <SearchField username={state.chipValue} clearSearch={clearSearch} avatarUrl={globalState.userObject?.avatar_url} />}
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {
-                      state.searchApplied ?
-                        <IconButton onClick={clearSearch} edge="end">
-                          <CloseRoundedIcon />
-                        </IconButton> :
-                        <IconButton onClick={handleSearch} edge="end">
-                          <SearchIcon />
-                        </IconButton>
-                    }
-                  </InputAdornment>
-                ),
-              }}
-            />
-
-            <Avatar
-              alt="Profile Image"
-              src={globalState.userObject?.avatar_url}
-              sx={{ width: 40, height: 40, marginLeft: 2, cursor: 'pointer' }}
-              onClick={showUserProfile}
-            />
-          </Box>
+        <Toolbar>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginTop: { xs: 2, sm: 0 },
+                  justifyContent: { xs: 'center', sm: 'flex-start' }, // Center on mobile, left-align on larger screens
+                }}
+              >
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={toggleDrawer(true)}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" sx={{ marginLeft: { xs: 1, sm: 1 } }}>
+                  GitHub Profile Tracker
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={6} xl={6} display="flex" justifyContent={{ xs: 'center', sm: 'flex-end' }} flexDirection={{ xs: 'column', sm: 'row' }} alignItems="center">
+              <TextField
+                size='small'
+                id="outlined-uncontrolled"
+                value={state.gitHubUserName}
+                placeholder={state.chipValue === '' ? 'Enter GitHub User Name':''}
+                onChange={handleChange}
+                sx={{ marginBottom: { xs: 1, sm: 0 }, bgcolor: 'white', borderRadius: 1, width: { xs: '100%', sm: 300 } }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="end">
+                      {state.searchApplied && <SearchField username={state.chipValue} clearSearch={clearSearch} avatarUrl={globalState.userObject?.avatar_url} />}
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {
+                        state.searchApplied ?
+                          <IconButton onClick={clearSearch} edge="end">
+                            <CloseRoundedIcon />
+                          </IconButton> :
+                          <IconButton onClick={handleSearch} edge="end">
+                            <SearchIcon />
+                          </IconButton>
+                      }
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Avatar
+                alt="Profile Image"
+                src={globalState.userObject?.avatar_url}
+                sx={{ width: 40, height: 40, marginLeft: { xs: 0, sm: 2 }, marginBottom: { xs: 2, sm: 0 }, marginTop: { xs: 1, sm: 0 }, cursor: 'pointer' }}
+                onClick={showUserProfile}
+              />
+            </Grid>
+          </Grid>
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={state.drawerOpen} onClose={toggleDrawer(false)}>
