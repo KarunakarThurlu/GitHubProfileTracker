@@ -8,6 +8,7 @@ import UserState from './context/UserState';
 import Following from './pages/Following';
 import Followers from './pages/Followers';
 import Profile from './pages/Profile';
+import NotFound from './utils/NotFound';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/GitHubProfileTracker/following" element={<Following />} />
           <Route path="/GitHubProfileTracker/followers" element={<Followers />} />
           <Route path="/GitHubProfileTracker/profile" element={<Profile />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </UserState>
     </Router>
