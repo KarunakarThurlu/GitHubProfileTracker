@@ -55,6 +55,12 @@ const SideMenu = ({onClose}) =>{
           </ListItemIcon>
           <ListItemText primary="Following" />
         </ListItem>
+        <ListItem component={Link} to='/GitHubProfileTracker/cd'>
+          <ListItemIcon>
+            <SwitchAccountRoundedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Following" />
+        </ListItem>
       </List>
      
     </div>
