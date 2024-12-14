@@ -24,7 +24,6 @@ function App() {
           <Route path="/GitHubProfileTracker/following" element={<Following />} />
           <Route path="/GitHubProfileTracker/followers" element={<Followers />} />
           <Route path="/GitHubProfileTracker/profile" element={<Profile />} />
-          <Route path="/GitHubProfileTracker/cd" element={<CustomDashBoard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </UserState>
