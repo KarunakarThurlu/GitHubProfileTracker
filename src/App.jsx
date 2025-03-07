@@ -16,15 +16,21 @@ function App() {
   return (
     <Router>
       <UserState>
-        <AppHeader />
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/GitHubProfileTracker/" element={<Dashboard />} />
-          <Route path="/GitHubProfileTracker/repositories" element={<Repositories />} />
-          <Route path="/GitHubProfileTracker/following" element={<Following />} />
-          <Route path="/GitHubProfileTracker/followers" element={<Followers />} />
-          <Route path="/GitHubProfileTracker/profile" element={<Profile />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/*" element={
+            <>
+              <AppHeader />
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/GitHubProfileTracker/" element={<Dashboard />} />
+                <Route path="/GitHubProfileTracker/repositories" element={<Repositories />} />
+                <Route path="/GitHubProfileTracker/following" element={<Following />} />
+                <Route path="/GitHubProfileTracker/followers" element={<Followers />} />
+                <Route path="/GitHubProfileTracker/profile" element={<Profile />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </>
+          } />
         </Routes>
       </UserState>
     </Router>
