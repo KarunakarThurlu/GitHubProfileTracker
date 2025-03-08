@@ -43,13 +43,14 @@ const UserState = ({ children }) => {
       })
       .then(response => {
         if (response.status == 200) {
-          getUserRepos(response.data.login)
+          getUserRepos(response.data.login, 200, 1)
           setState(prevState => ({ ...prevState, severity: 'success', message: 'User Details fetched Successfully!', showNotification: true }))
         }
       })
       .catch(error => {
-        if (error.status == 403) {
-          setState(prevState => ({ ...prevState, severity: 'warning', message: error.message, showNotification: true }))
+        const response = error.response;
+        if (response.status == 403) {
+          setState(prevState => ({ ...prevState, severity: 'warning', message: response.data.message, showNotification: true }))
           console.log("Rate Limit exceeded , ", error)
         } else {
           setState(prevState => ({ ...prevState, severity: 'error', message: 'InValid User Name', showNotification: true }))
@@ -61,9 +62,9 @@ const UserState = ({ children }) => {
       })
   }
 
-  const getUserRepos = async (githubUserName) => {
+  const getUserRepos = async (githubUserName,pageSize,pageNum) => {
     setState(prevState => ({ ...prevState, showSpinner: true }))
-    await fetchUserRepos(githubUserName, `per_page=100&page=1`)
+    await fetchUserRepos(githubUserName, `per_page=${pageSize}&page=${pageNum}`)
       .then(response => {
         if (response.status == 200) {
           dispatch({
@@ -86,42 +87,44 @@ const UserState = ({ children }) => {
       })
   }
 
-  const getUserFollowers = async (githubUserName) => {
-    setState(prevState => ({ ...prevState, showSpinner: true }))
-    await fetchUserFollowers(githubUserName)
-      .then(response => {
-        if (response.status == 200) {
-          dispatch({
-            type: UserActions.FOLLOWERS_DATA,
-            payload: response.data
-          })
-        }
-      })
-      .catch(error => {
-        console.log("Error While Fetching User Followers", error)
-      })
-      .finally(() => {
-        setState(prevState => ({ ...prevState, showSpinner: false }))
-      })
-  }
+  const getUserFollowers = async (githubUserName, pageSize, pageNum) => {
+    console.log('getUserFollowers called', { githubUserName, pageSize, pageNum });
+    setState(prevState => ({ ...prevState, showSpinner: true }));
+    try {
+      const response = await fetchUserFollowers(githubUserName, pageSize, pageNum);
+      if (response.status === 200) {
+        dispatch({
+          type: UserActions.FOLLOWERS_DATA,
+          payload: response.data,
+        });
+      }
+      setState(prevState => ({ ...prevState, showSpinner: false }));
+      return response; // Explicitly return the response
+    } catch (error) {
+      console.log("Error While Fetching User Followers", error);
+      setState(prevState => ({ ...prevState, showSpinner: false }));
+      throw error; // Optionally rethrow to handle errors upstream
+    }
+  };
 
-  const getUserFollowingData = async (githubUserName) => {
-    setState(prevState => ({ ...prevState, showSpinner: true }))
-    await fetchUserFollowing(githubUserName)
-      .then(response => {
-        if (response.status == 200) {
-          dispatch({
-            type: UserActions.FOLLOWING_DATA,
-            payload: response.data
-          })
-        }
-      })
-      .catch(error => {
-        console.log("Error While Fetching User Following data", error)
-      })
-      .finally(() => {
-        setState(prevState => ({ ...prevState, showSpinner: false }))
-      })
+  const getUserFollowingData = async (githubUserName, pageSize, pageNum) => {
+    console.log('getUserFollowingData called', { githubUserName, pageSize, pageNum });
+    setState(prevState => ({ ...prevState, showSpinner: true }));
+    try {
+      const response = await fetchUserFollowing(githubUserName, pageSize, pageNum);
+      if (response.status === 200) {
+        dispatch({
+          type: UserActions.FOLLOWING_DATA,
+          payload: response.data,
+        });
+      }
+      setState(prevState => ({ ...prevState, showSpinner: false }));
+      return response; // Explicitly return the response
+    } catch (error) {
+      console.log("Error While Fetching User Following data", error);
+      setState(prevState => ({ ...prevState, showSpinner: false }));
+      throw error; // Optionally rethrow to handle errors upstream
+    }
   }
 
   const clearUserData = () => {

@@ -1,18 +1,59 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Box, IconButton, Grid } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import UserCard from '../components/UserCard';
 import UserContext from '../context/UserContext';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 const Following = () => {
 
     const { getUserFollowingData, globalState } = useContext(UserContext);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const perPage = 50;
+    const hasFetchedInitial = useRef(false);
 
+    // Fetch followers function
+    const fetchFollowing = async (githubUserName, pageNum) => {
+        try {
+            const response = await getUserFollowingData(githubUserName, perPage, pageNum);
+            const pagesCount = calculateTotalPagesCount(response);
+            setTotalPages(prev => (pagesCount > prev ? pagesCount : prev));
+            if (Array.isArray(response.data) && response.data.length === 0 && pageNum > 1) {
+                setPage(prev => prev - 1);
+            }
+        } catch (error) {
+            console.error("Failed to fetch followers:", error);
+            setTotalPages(1);
+        }
+    };
+
+    // Initial fetch on mount, only if login is available
     useEffect(() => {
-        if (globalState.userObject?.login)
-            getUserFollowingData(globalState.userObject.login)
-    }, [])
+        const effectId = Math.random();
+        console.log('useEffect triggered', { effectId, page, login: globalState.userObject?.login });
+
+        if (globalState.userObject?.login && !hasFetchedInitial.current) {
+            hasFetchedInitial.current = true; // Mark as fetched
+            fetchFollowing(globalState.userObject.login, page);
+        }
+    }, []);
+
+    // Calculate total pages from response headers
+    const calculateTotalPagesCount = (response) => {
+        if (!response) return 1;
+        const linkHeader = response.headers?.get('Link');
+        if (linkHeader) {
+            const lastPageMatch = linkHeader.match(/page=(\d+)>; rel="last"/);
+            if (lastPageMatch) {
+                return parseInt(lastPageMatch[1], 10);
+            }
+        }
+        // If no Link header, assume single page or rely on previous totalPages
+        return totalPages > 1 ? totalPages : 1;
+    };
 
     const scrollContainerRef = useRef(null);
 
@@ -22,6 +63,17 @@ const Following = () => {
 
     const scrollRight = () => {
         scrollContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    };
+
+    // Handle page change
+    const handlePageChange = (event, newPage) => {
+        if (newPage !== undefined && newPage !== null && newPage > 0) {
+            setPage(newPage);
+            // Fetch new page data immediately
+            if (globalState.userObject?.login) {
+                getUserFollowingData(globalState.userObject.login, perPage, newPage);
+            }
+        }
     };
 
     return (
@@ -91,6 +143,16 @@ const Following = () => {
                     </Grid>
                 </Box>
             </Box>
+            {globalState.following?.length !== 0 &&
+                <Stack spacing={2} direction='row' sx={{ justifyContent: 'center' }}>
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        variant="outlined"
+                        onChange={handlePageChange}
+                        disabled={totalPages <= 1}
+                    />
+                </Stack>}
         </>
     );
 };
