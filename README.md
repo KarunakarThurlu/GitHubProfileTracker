@@ -1,8 +1,33 @@
-# React + Vite
+🚀 GitHub Profile Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A powerful web application that lets you explore detailed insights about any GitHub user by simply entering their username. Get instant access to their profile stats, repositories, followers, and more!
 
-Currently, two official plugins are available:
+----------------------
+🌟 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+----------------------
+✅ Profile Dashboard – View account creation date, last update, followers, following count, and repository count by language.
+
+✅ Following Page – Explore all followers with their profile pictures and essential details.
+
+✅ Language Breakdown – Analyze repositories by programming language.
+
+✅ User-Friendly UI – Clean and intuitive design for a seamless experience.
+
+----------------------
+🎥 Demo
+
+----------------------
+
+🚀 Live Preview: [GitHub Profile Tracker](https://karunakarthurlu.github.io/GitHubProfileTracker/)
+
+-----------------------
+🛠️ Tech Stack
+
+-----------------------
+
+Frontend: React.js 
+
+API: GitHub REST API
+
+Styling: Material-UI
